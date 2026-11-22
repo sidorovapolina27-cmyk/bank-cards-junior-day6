@@ -3,7 +3,7 @@ spring:
     name: card-display-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/cards_stage06
+    url: jdbc:postgresql://localhost:5433/cards_stage06
     username: dev
     password: dev123
 

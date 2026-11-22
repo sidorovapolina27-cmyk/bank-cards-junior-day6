@@ -71,4 +71,10 @@ public class Card {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "card_design", length = 32)
+    private String cardDesign;
+
+    @Column(name = "currency_code", nullable = false, length = 3)
+    private String currencyCode;
 }

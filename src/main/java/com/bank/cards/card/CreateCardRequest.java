@@ -26,4 +26,5 @@ public class CreateCardRequest {
     private LocalDate validFrom;
     private LocalDate validTo;
     private String productName;
+    private String currencyCode;
 }

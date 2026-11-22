@@ -1,5 +1,6 @@
 package com.bank.cards.card;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,4 +28,6 @@ public class CardDto {
     private final LocalDate validTo;
     private final String productName;
     private final LocalDate createdDate;
+    private final String cardDesign;
+    private String currencyCode;
 }

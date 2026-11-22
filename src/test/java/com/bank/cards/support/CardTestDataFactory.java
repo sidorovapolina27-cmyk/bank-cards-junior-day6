@@ -33,6 +33,8 @@ public final class CardTestDataFactory {
                 .validFrom(LocalDate.of(2025, 1, 1))
                 .validTo(LocalDate.of(2030, 1, 1))
                 .productName("Карта Классическая")
+                .cardDesign("Синяя классика")
+                .currencyCode("RUB")
                 .createdAt(LocalDateTime.of(2025, 1, 1, 12, 0));
     }
 
@@ -49,7 +51,9 @@ public final class CardTestDataFactory {
                 LocalDate.of(2024, 3, 1),
                 LocalDate.of(2029, 3, 1),
                 "Карта Классическая",
-                LocalDate.of(2024, 3, 1)
+                LocalDate.of(2024, 3, 1),
+                "Синяя классика",
+                "RUB"
         );
     }
 
@@ -63,7 +67,8 @@ public final class CardTestDataFactory {
                 PaymentSystem.MIR,
                 LocalDate.of(2026, 1, 1),
                 LocalDate.of(2031, 1, 1),
-                "Карта Классическая"
+                "Карта Классическая",
+                "RUB"
         );
     }
 
