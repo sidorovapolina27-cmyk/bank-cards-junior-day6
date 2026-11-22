@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: card-display-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cards_stage06
+    username: dev
+    password: dev123
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.yaml
+
+server:
+  port: 8080
+
+app:
+  admin-credentials: admin:admin123,ops:ops456
