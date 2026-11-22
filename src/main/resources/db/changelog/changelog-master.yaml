@@ -30,3 +30,35 @@ databaseChangeLog:
         - sqlFile:
             path: 04-seed-transactions.sql
             relativeToChangelogFile: true
+
+  - changeSet:
+      id: 005-card-design
+      author: card-display-team
+      changes:
+        - sqlFile:
+            path: 05-card-design.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 006-card-limits
+      author: card-display-team
+      changes:
+        - sqlFile:
+            path: 06-card-limits.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 007-currency-code
+      author: card-display-team
+      changes:
+        - sqlFile:
+            path: 07-currency-code.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 008-default-limit
+      author: card-display-team
+      changes:
+        - sqlFile:
+            path: 08-default-limit.sql
+            relativeToChangelogFile: true

@@ -2,6 +2,7 @@ package com.bank.cards.card;
 
 import com.bank.cards.client.ClientNotFoundException;
 import com.bank.cards.client.ClientRepository;
+import com.bank.cards.limit.*;
 import com.bank.cards.transaction.Transaction;
 import com.bank.cards.transaction.TransactionDto;
 import com.bank.cards.transaction.TransactionMapper;
@@ -23,17 +24,21 @@ public class CardService {
     private final TransactionRepository transactionRepository;
     private final CardMapper cardMapper;
     private final TransactionMapper transactionMapper;
+    private final LimitMapper limitMapper;
+    private final CardLimitRepository cardLimitRepository;
 
     public CardService(CardRepository cardRepository,
                        ClientRepository clientRepository,
                        TransactionRepository transactionRepository,
                        CardMapper cardMapper,
-                       TransactionMapper transactionMapper) {
+                       TransactionMapper transactionMapper, LimitMapper linitMapper, LimitMapper limitMapper, CardLimitRepository cardLimitRepository) {
         this.cardRepository = cardRepository;
         this.clientRepository = clientRepository;
         this.transactionRepository = transactionRepository;
         this.cardMapper = cardMapper;
         this.transactionMapper = transactionMapper;
+        this.limitMapper = limitMapper;
+        this.cardLimitRepository = cardLimitRepository;
     }
 
     public CardDto getCard(long id) {
@@ -131,6 +136,7 @@ public class CardService {
         card.setProductName(request.getProductName());
         card.setStatus(CardStatus.NEW);
         card.setCreatedAt(LocalDateTime.now());
+        card.setCurrencyCode(resolveCurrency(request.getCurrencyCode(), request.getPaymentSystem()));
         return cardMapper.toDto(cardRepository.save(card));
     }
 
@@ -155,5 +161,34 @@ public class CardService {
     private void requireCard(long cardId) {
         cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException(cardId));
+    }
+
+    public LimitDto addLimit(long cardId, CreateLimitRequest request) {
+        requireCard(cardId);
+        if (cardLimitRepository.existsByCardIdAndLimitType(cardId, request.getLimitType())) {
+            throw new LimitAlreadyExistsException(cardId, request.getLimitType());
+        }
+        CardLimit limit = cardLimitRepository.save(CardLimit.builder()
+                .cardId(cardId)
+                .limitType(request.getLimitType())
+                .amount(request.getAmount())
+                .build());
+        return limitMapper.toDto(limit);
+    }
+
+    public List<LimitDto> getCardLimits(long cardId) {
+        requireCard(cardId);
+        return limitMapper.toDtoList(cardLimitRepository.findByCardIdOrderByIdAsc(cardId));
+    }
+
+    private String resolveCurrency(String requested, PaymentSystem paymentSystem) {
+        if (requested != null && !requested.isBlank()) {
+            return requested;
+        }
+        return switch (paymentSystem) {
+            case MIR -> "RUB";
+            case VISA -> "USD";
+            case MASTERCARD -> "EUR";
+        };
     }
 }

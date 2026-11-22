@@ -1,5 +1,7 @@
 package com.bank.cards.card;
 
+import com.bank.cards.limit.CreateLimitRequest;
+import com.bank.cards.limit.LimitDto;
 import com.bank.cards.transaction.TransactionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -91,10 +93,22 @@ public class CardController {
         return cardService.getExpiringCards(clientId, days);
     }
 
+    @GetMapping("/api/cards/{id}/limits")
+    public List<LimitDto> getCardLimits(@PathVariable long id) {
+        return cardService.getCardLimits(id);
+    }
+
+
     @PostMapping("/api/cards")
     @ResponseStatus(HttpStatus.CREATED)
     public CardDto createCard(@RequestBody CreateCardRequest request) {
         return cardService.createCard(request);
+    }
+
+    @PostMapping("/api/cards/{id}/limits")
+    @ResponseStatus(HttpStatus.CREATED)
+    public LimitDto addLimit(@PathVariable long id, @RequestBody CreateLimitRequest request) {
+        return cardService.addLimit(id, request);
     }
 
     @PutMapping("/api/cards/{id}")
